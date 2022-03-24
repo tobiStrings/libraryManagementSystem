@@ -1,5 +1,6 @@
 package com.example.librarymanagementsystem.data.models.Book;
 
+import com.example.librarymanagementsystem.data.enums.RequestStatus;
 import com.example.librarymanagementsystem.data.enums.ReservationStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -19,7 +20,7 @@ public class Book {
     private String isbn;
     private Publication publication;
     private ReservationStatus reservationStatus;
+    private RequestStatus requestStatus;
     private Date dueDate = new Date();
     private List<FeedBack> feedBacks;
-
 }
