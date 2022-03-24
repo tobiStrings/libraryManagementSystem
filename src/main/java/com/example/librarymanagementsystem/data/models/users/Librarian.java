@@ -11,6 +11,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Librarian extends User{
     @Id
     private String id;
-    private String password;
     private String searchString;
 }
