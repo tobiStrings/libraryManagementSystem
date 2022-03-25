@@ -10,6 +10,7 @@ import com.example.librarymanagementsystem.data.repository.account.AccountReposi
 import com.example.librarymanagementsystem.data.repository.users.*;
 import com.example.librarymanagementsystem.exceptions.LibraryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +25,8 @@ public class UserServiceImpl implements UserService{
     private LibrarianRepository librarianRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
 
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService{
         accountRepository.save(account);
         Student student = new Student();
         student.setName(request.getUserName());
-        student.setPassword(request.getPassword());
+        student.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         student.setUserType(UserType.STUDENT);
         student.setUserAccount(account);
         student.setStudentsUserClass(Type.Class.valueOf(request.getClassNameOrDeptName()));
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService{
         accountRepository.save(account);
         Staff staff = new Staff();
         staff.setName(request.getUserName());
-        staff.setPassword(request.getPassword());
+        staff.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         staff.setUserType(UserType.STAFF);
         staff.setUserAccount(account);
         staff.setDepartment(Type.Department.valueOf(request.getClassNameOrDeptName()));
