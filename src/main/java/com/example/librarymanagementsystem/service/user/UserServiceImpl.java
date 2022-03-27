@@ -10,9 +10,11 @@ import com.example.librarymanagementsystem.data.repository.account.AccountReposi
 import com.example.librarymanagementsystem.data.repository.users.*;
 import com.example.librarymanagementsystem.exceptions.LibraryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@EnableMongoRepositories
 @Service
 public class UserServiceImpl implements UserService{
     @Autowired
@@ -46,6 +48,11 @@ public class UserServiceImpl implements UserService{
             userRepository.save(staff);
             return new RegisterResponse("Staff "+request.getUserName()+" has been registered successfully");
         }
+        if (request.getUserType().equalsIgnoreCase("librarian")){
+            User librarian = registerLibrarian(request,account);
+            userRepository.save(librarian);
+            return new RegisterResponse("Librarian "+request.getUserName()+" has been registered successfully");
+        }
         return null;
     }
 
@@ -69,6 +76,16 @@ public class UserServiceImpl implements UserService{
         staff.setUserAccount(account);
         staff.setDepartment(Type.Department.valueOf(request.getClassNameOrDeptName()));
         return staffRepository.save(staff);
+    }
+
+    private Librarian registerLibrarian(RegisterRequest request,Account account){
+        accountRepository.save(account);
+        Librarian librarian = new Librarian();
+        librarian.setName(request.getUserName());
+        librarian.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        librarian.setUserType(UserType.LIBRARIAN);
+        librarian.setUserAccount(account);
+        return librarianRepository.save(librarian);
     }
 
     private void validateRegisterRequest(RegisterRequest request) throws LibraryException {
