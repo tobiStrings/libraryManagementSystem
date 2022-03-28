@@ -10,14 +10,18 @@ import com.example.librarymanagementsystem.data.repository.account.AccountReposi
 import com.example.librarymanagementsystem.data.repository.users.*;
 import com.example.librarymanagementsystem.exceptions.LibraryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @EnableMongoRepositories
-@Service
+@Service("userServiceImpl")
 public class UserServiceImpl implements UserService{
     @Autowired
+    @Qualifier("userRepository")
     private UserRepository userRepository;
     @Autowired
     private StudentRepository studentRepository;

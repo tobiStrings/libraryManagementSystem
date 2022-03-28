@@ -38,7 +38,8 @@ import java.util.List;
 import java.util.Set;
 
 @SpringBootApplication
-@EnableMongoRepositories
+@ComponentScan(basePackages = {"com.example.librarymanagementsystem.service"})
+@ComponentScan(basePackages = {"com.example.librarymanagementsystem.data.repository"})
 public class LibraryManagementSystemApplication {
 
     public static void main(String[] args) {
